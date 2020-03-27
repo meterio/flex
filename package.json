@@ -1,0 +1,27 @@
+{
+  "name": "@meterio/flex",
+  "version": "0.4.2",
+  "description": "Standard interface to connect DApp with Meter and user",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meterio/flex.git"
+  },
+  "keywords": [
+    "flex",
+    "meter",
+    "meterio",
+    "dfinlab",
+    "defi",
+    "dapp",
+    "blockchain"
+  ],
+  "author": "simonzg",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/meterio/fiex/issues"
+  },
+  "homepage": "https://github.com/meterio/flex#readme"
+}
