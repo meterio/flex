@@ -20,8 +20,7 @@ To simplify these steps, simply perform redirection:
 
 ```javascript
 if (!window.flex) {
-  location.href =
-    "https://shoal.meter.io/r/#" + encodeURIComponent(location.href);
+  location.href = 'https://shoal.meter.io/r/#' + encodeURIComponent(location.href);
 }
 ```
 
@@ -30,8 +29,7 @@ Additionally, network can be specified:
 ```javascript
 if (!window.flex) {
   // the app prefers running on test net
-  location.href =
-    "https://shoal.meter.io/r/#/test/" + encodeURIComponent(location.href);
+  location.href = 'https://shoal.meter.io/r/#/test/' + encodeURIComponent(location.href);
 }
 ```
 
@@ -40,13 +38,13 @@ if (!window.flex) {
 #### TypeScript(Recommended)
 
 ```bash
-npm install meter-flex --save-dev
+npm install @meterio/flex --save-dev
 ```
 
 Place following line in any .ts file of your project
 
 ```typescript
-import "meter-flex";
+import '@meterio/flex';
 ```
 
 or
@@ -60,14 +58,13 @@ No need to set up, just code in your favourite way.
 ### Usage
 
 ```javascript
-const el = document.createElement("h1");
+const el = document.createElement('h1');
 
 const status = flex.meter.status;
 el.innerText =
-  "You are 'flexed' to meter, the status is " +
-  (status.progress === 1 ? "synced" : "syncing");
+  "You are 'flexed' to meter, the status is " + (status.progress === 1 ? 'synced' : 'syncing');
 
-document.querySelector("body").append(el);
+document.querySelector('body').append(el);
 ```
 
 ## Resource

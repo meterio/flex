@@ -56,7 +56,7 @@ declare namespace Flex {
     /**
      * Return summaries for past auctions
      */
-    auctionSummary(): Promise<Meter.AuctionSummary>;
+    auctionSummaries(): Promise<Meter.AuctionSummary[]>;
     /**
      * Create a ticker to track head block changes.
      *
@@ -92,7 +92,7 @@ declare namespace Flex {
      * @type T
      * @param kind
      */
-    filter<T extends "event" | "transfer">(kind: T): Meter.Filter<T>;
+    filter<T extends 'event' | 'transfer'>(kind: T): Meter.Filter<T>;
 
     /**
      * Create an explainer to obtain how blockchain would execute a tx.
@@ -149,9 +149,9 @@ declare namespace Flex {
       createTime: number;
       receivedMTR: string;
       actualPrice: string;
-      leftoverMTRG:  string;
-    }
-  
+      leftoverMTRG: string;
+    };
+
     type AuctionTx = {
       addr: string;
       amount: string;
@@ -159,7 +159,7 @@ declare namespace Flex {
       nonce: number;
       lastTime: number;
     };
-  
+
     type Auction = {
       auctionID: string;
       startHeight: number;
@@ -169,7 +169,7 @@ declare namespace Flex {
       createTime: number;
       receivedMTR: string;
       auctionTxs: AuctionTx[];
-    }
+    };
 
     interface Ticker {
       /**
@@ -258,7 +258,7 @@ declare namespace Flex {
        *
        * @returns promise of auction summary list
        */
-      getSummary(): Promise<AuctionSummary>;
+      getSummaries(): Promise<AuctionSummary[]>;
     }
 
     interface Method {
@@ -308,8 +308,7 @@ declare namespace Flex {
        * TODO: More detailed description
        * @param ties a set of addresses, as the condition of cache invalidation
        */
-      cache(ties: string[]): this
-
+      cache(ties: string[]): this;
     }
 
     interface BucketVisitor {
@@ -341,7 +340,7 @@ declare namespace Flex {
        * Create an event filter
        * @param indexedSet a set of objects contain indexed arguments
        */
-      filter(indexedSet: object[]): Filter<"event">;
+      filter(indexedSet: object[]): Filter<'event'>;
     }
 
     interface BlockVisitor {
@@ -374,7 +373,7 @@ declare namespace Flex {
       getReceipt(): Promise<Receipt | null>;
     }
 
-    interface Filter<T extends "event" | "transfer"> {
+    interface Filter<T extends 'event' | 'transfer'> {
       /**
        * set criteria
        * @param set
@@ -391,7 +390,7 @@ declare namespace Flex {
        * Set sort order
        * @param order
        */
-      order(order: "asc" | "desc"): this;
+      order(order: 'asc' | 'desc'): this;
 
       /**
        * Apply the filter
@@ -609,19 +608,19 @@ declare namespace Flex {
     };
 
     namespace Filter {
-      type Criteria<T extends "event" | "transfer"> = T extends "event"
+      type Criteria<T extends 'event' | 'transfer'> = T extends 'event'
         ? Event.Criteria
-        : T extends "transfer"
+        : T extends 'transfer'
         ? Transfer.Criteria
         : never;
 
       type Range = {
-        unit: "block" | "time";
+        unit: 'block' | 'time';
         from: number;
         to: number;
       };
-      type Result<T extends "event" | "transfer"> = Array<
-        T extends "event" ? Event : T extends "transfer" ? Transfer : never
+      type Result<T extends 'event' | 'transfer'> = Array<
+        T extends 'event' ? Event : T extends 'transfer' ? Transfer : never
       >;
     }
 
@@ -641,124 +640,230 @@ declare namespace Flex {
      * Acquire the signing service
      * @param kind kind of target to be signed
      */
-    sign<T extends 'tx' | 'cert'>(kind: T): Vendor.SigningService<T>
+    sign<T extends 'tx' | 'cert'>(kind: T): Vendor.SigningService<T>;
 
     /**
      * Returns whether an address is owned by user
      * @param addr account address
      */
-    owned(addr: string): Promise<boolean>
-}
+    owned(addr: string): Promise<boolean>;
+  }
 
-namespace Vendor {
+  namespace Vendor {
     interface TxSigningService {
-        /**
-         * enforce the signer
-         * @param addr signer address
-         */
-        signer(addr: string): this
+      /**
+       * enforce the signer
+       * @param addr signer address
+       */
+      signer(addr: string): this;
 
-        /**
-         * enforce max allowed gas
-         * @param gas 
-         */
-        gas(gas: number): this
+      /**
+       * enforce max allowed gas
+       * @param gas
+       */
+      gas(gas: number): this;
 
-        /**
-         * set another txid as dependency
-         * @param txid 
-         */
-        dependsOn(txid: string): this
+      /**
+       * set another txid as dependency
+       * @param txid
+       */
+      dependsOn(txid: string): this;
 
-        /**
-         * set the link to reveal tx related information.
-         * first appearance of slice '{txid}' in the given link url will be replaced with txid.
-         * @param url link url
-         */
-        link(url: string): this
+      /**
+       * set the link to reveal tx related information.
+       * first appearance of slice '{txid}' in the given link url will be replaced with txid.
+       * @param url link url
+       */
+      link(url: string): this;
 
-        /**
-         * set comment for the message
-         * @param text 
-         */
-        comment(text: string): this
+      /**
+       * set comment for the message
+       * @param text
+       */
+      comment(text: string): this;
 
-        /**
-         * enable VIP-191 by providing delegation handler
-         * @param handler to sign tx as fee delegator
-         */
-        delegate(handler: DelegationHandler): this
+      /**
+       * enable VIP-191 by providing delegation handler
+       * @param handler to sign tx as fee delegator
+       */
+      delegate(handler: DelegationHandler): this;
 
-        /**
-         * send request
-         * @param msg clauses with comments
-         */
-        request(msg: TxMessage): Promise<TxResponse>
+      /**
+       * send request
+       * @param msg clauses with comments
+       */
+      request(msg: TxMessage): Promise<TxResponse>;
     }
 
     interface CertSigningService {
-        /**
-         * enforce the signer
-         * @param addr signer address
-         */
-        signer(addr: string): this
+      /**
+       * enforce the signer
+       * @param addr signer address
+       */
+      signer(addr: string): this;
 
-        /**
-         * set the link to reveal cert related information.
-         * first appearance of slice '{certid}' in the given link url will be replaced with cert id.
-         * @param url link url
-         */
-        link(url: string): this
+      /**
+       * set the link to reveal cert related information.
+       * first appearance of slice '{certid}' in the given link url will be replaced with cert id.
+       * @param url link url
+       */
+      link(url: string): this;
 
-        /**
-         * send request
-         * @param msg 
-         */
-        request(msg: CertMessage): Promise<CertResponse>
+      /**
+       * send request
+       * @param msg
+       */
+      request(msg: CertMessage): Promise<CertResponse>;
     }
 
-    type SigningService<T extends 'tx' | 'cert'> =
-        T extends 'tx' ? TxSigningService :
-        T extends 'cert' ? CertSigningService : never
+    type SigningService<T extends 'tx' | 'cert'> = T extends 'tx'
+      ? TxSigningService
+      : T extends 'cert'
+      ? CertSigningService
+      : never;
 
-    type TxMessage = Array<Meter.Clause & {
+    type TxMessage = Array<
+      Meter.Clause & {
         /** comment to the clause */
-        comment?: string
+        comment?: string;
         /** as the hint for wallet to decode clause data */
-        abi?: object
-    }>
+        abi?: object;
+      }
+    >;
 
     type CertMessage = {
-        purpose: 'identification' | 'agreement'
-        payload: {
-            type: 'text'
-            content: string
-        }
-    }
+      purpose: 'identification' | 'agreement';
+      payload: {
+        type: 'text';
+        content: string;
+      };
+    };
 
     type TxResponse = {
-        txid: string
-        signer: string
-    }
+      txid: string;
+      signer: string;
+    };
 
     type CertResponse = {
-        annex: {
-            domain: string
-            timestamp: number
-            signer: string
-        }
-        signature: string
-    }
+      annex: {
+        domain: string;
+        timestamp: number;
+        signer: string;
+      };
+      signature: string;
+    };
 
+    /**
+     * returns object contains signature of fee delegator
+     * @param unsignedTx.raw RLP-encoded unsigned tx in hex form
+     * @param unsignedTx.origin address of intended tx origin
+     */
+    type DelegationHandler = (unsignedTx: {
+      raw: string;
+      origin: string;
+    }) => Promise<{ signature: string }>;
+  }
+  type ErrorType = 'BadParameter' | 'Rejected';
 
-    /** 
-    * returns object contains signature of fee delegator 
-    * @param unsignedTx.raw RLP-encoded unsigned tx in hex form
-    * @param unsignedTx.origin address of intended tx origin
-    */
-    type DelegationHandler = (unsignedTx: { raw: string, origin: string }) => Promise<{ signature: string }>
-}
-  type ErrorType = "BadParameter" | "Rejected";
+  interface Driver {
+    readonly genesis: Meter.Block;
+    /** current known head */
+    readonly head: Meter.Status['head'];
+
+    /**
+     * poll new head
+     * rejected only when driver closed
+     */
+    pollHead(): Promise<Meter.Status['head']>;
+
+    getBlock(revision: string | number): Promise<Meter.Block | null>;
+    getTransaction(id: string): Promise<Meter.Transaction | null>;
+    getReceipt(id: string): Promise<Meter.Receipt | null>;
+
+    getAccount(addr: string, revision: string): Promise<Meter.Account>;
+    getCode(addr: string, revision: string): Promise<Meter.Code>;
+    getStorage(addr: string, key: string, revision: string): Promise<Meter.Storage>;
+    getCandidates(): Promise<Meter.Candidate[]>;
+    getBuckets(): Promise<Meter.Bucket[]>;
+    getStakeholders(): Promise<Meter.Stakeholder[]>;
+    getAuction(): Promise<Meter.Auction>;
+    getAuctionSummaries(): Promise<Meter.AuctionSummary[]>;
+
+    explain(
+      arg: Driver.ExplainArg,
+      revision: string,
+      cacheTies?: string[]
+    ): Promise<Meter.VMOutput[]>;
+
+    filterEventLogs(arg: Driver.FilterEventLogsArg): Promise<Meter.Event[]>;
+    filterTransferLogs(arg: Driver.FilterTransferLogsArg): Promise<Meter.Transfer[]>;
+
+    // vendor methods
+    signTx(msg: Driver.SignTxArg, options: Driver.SignTxOption): Promise<Driver.SignTxResult>;
+    signCert(
+      msg: Driver.SignCertArg,
+      option: Driver.SignCertOption
+    ): Promise<Driver.SignCertResult>;
+    isAddressOwned(addr: string): Promise<boolean>;
+  }
+
+  namespace Driver {
+    type ExplainArg = {
+      clauses: Array<{
+        to: string | null;
+        value: string;
+        data: string;
+      }>;
+      caller?: string;
+      gas?: number;
+      gasPrice?: string;
+    };
+
+    type FilterEventLogsArg = {
+      range: Meter.Filter.Range;
+      options: {
+        offset: number;
+        limit: number;
+      };
+      criteriaSet: Meter.Event.Criteria[];
+      order: 'asc' | 'desc';
+    };
+
+    type FilterTransferLogsArg = {
+      range: Meter.Filter.Range;
+      options: {
+        offset: number;
+        limit: number;
+      };
+      criteriaSet: Meter.Transfer.Criteria[];
+      order: 'asc' | 'desc';
+    };
+
+    type SignTxArg = Array<{
+      to: string | null;
+      value: string;
+      data: string;
+      token: number;
+      comment?: string;
+      abi?: object;
+    }>;
+    type SignTxOption = {
+      signer?: string;
+      gas?: number;
+      dependsOn?: string;
+      link?: string;
+      comment?: string;
+      delegationHandler?: Vendor.DelegationHandler;
+    };
+    type SignTxResult = Vendor.TxResponse;
+
+    type SignCertArg = Vendor.CertMessage;
+    type SignCertOption = {
+      signer?: string;
+      link?: string;
+    };
+    type SignCertResult = Vendor.CertResponse;
+  }
 }
 
 declare interface Window {
