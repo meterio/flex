@@ -131,6 +131,7 @@ declare namespace Flex {
       ipAddr: string;
       port: number;
       totalVotes: string | number;
+      commission: number;
       buckets: string[];
     };
 
