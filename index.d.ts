@@ -814,6 +814,7 @@ declare namespace Flex {
         to: string | null;
         value: string;
         data: string;
+        token: number;
       }>;
       caller?: string;
       gas?: number;
