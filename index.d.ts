@@ -589,6 +589,7 @@ declare namespace Flex {
       sender: string;
       recipient: string;
       amount: string;
+      token: number;
       meta?: LogMeta;
     };
 
