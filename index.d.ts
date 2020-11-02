@@ -515,7 +515,8 @@ declare namespace Flex {
       receiptsRoot: string;
       signer: string;
       transactions: string[];
-      isTrunk?: boolean;
+      isTrunk: boolean;
+      isKBlock: boolean;
       lastKBlockHeight: number;
       committee: CommitteeMember[];
       qc: QuorumCert;
