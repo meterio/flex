@@ -521,6 +521,8 @@ declare namespace Flex {
       committee: CommitteeMember[];
       qc: QuorumCert;
       nonce: number;
+      epoch: number;
+      kblockData: string[];
     };
 
     type Clause = {

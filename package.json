@@ -1,6 +1,6 @@
 {
   "name": "@meterio/flex",
-  "version": "0.4.9",
+  "version": "0.4.11",
   "description": "Standard interface to connect DApp with Meter and user",
   "main": "index.js",
   "types": "index.d.ts",
