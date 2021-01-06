@@ -101,77 +101,179 @@ declare namespace Flex {
   }
 
   namespace Meter {
-    type Bucket = {
-      id: string;
-      owner: string;
-      value: string | number;
-      token: number;
-      createTime: string;
-      unbounded: boolean;
-      candidate: string;
-      rate: number;
-      option: number;
-      bonusVotes: string | number;
-      totalVotes: string | number;
-    };
-
-    type Delegate = {
+    export type Candidate = {
       name: string;
+      description: string;
       address: string;
       pubKey: string;
-      votingPower: string | number;
       ipAddr: string;
       port: number;
-    };
-
-    type Candidate = {
-      name: string;
-      addr: string;
-      pubKey: string;
-      ipAddr: string;
-      port: number;
-      totalVotes: string | number;
+      totalVotes: string;
       commission: number;
       buckets: string[];
     };
 
-    type Stakeholder = {
+    export type Stakeholder = {
       holder: string;
-      totalStake: string | number;
+      totalStake: string;
       buckets: string[];
     };
 
-    type AuctionSummary = {
+    export type Distributor = {
+      address: string;
+      autobid: number;
+      shares: number;
+    };
+
+    export type Delegate = {
+      name: string;
+      address: string;
+      pubKey: string;
+      votingPower: string;
+      ipAddr: string;
+      port: number;
+      commission: number;
+      distributors: Distributor[];
+    };
+
+    export type Bucket = {
+      id: string;
+      owner: string;
+      value: string;
+      token: number;
+      nonce: number;
+      autobid: number;
+      createTime: number;
+      unbounded: boolean;
+      candidate: string;
+      rate: number;
+      option: number;
+      bonusVotes: number;
+      totalVotes: string;
+      matureTime: number;
+      calcLastTime: number;
+    };
+
+    export type Jailed = {
+      address: string;
+      name: string;
+      pubKey: string;
+      totalPoints: number;
+      bailAmount: string;
+      jailedTime: number;
+    };
+
+    // missing leader infraction
+    export type MissingLeaderInfo = {
+      epoch: number;
+      round: number;
+    };
+    export type MissingLeader = {
+      counter: string;
+      info: MissingLeaderInfo[];
+    };
+
+    // missing proposer infraction
+    export type MissingProposerInfo = {
+      epoch: number;
+      height: number;
+    };
+    export type MissingProposer = {
+      counter: string;
+      info: MissingProposerInfo[];
+    };
+
+    // missing voter infraction
+    export type MissingVoterInfo = {
+      epoch: number;
+      height: number;
+    };
+    export type MissingVoter = {
+      counter: string;
+      info: MissingVoterInfo[];
+    };
+
+    // double signer infraction
+    export type DoubleSignerInfo = {
+      epoch: number;
+      round: number;
+      height: number;
+    };
+    export type DoubleSigner = {
+      counter: string;
+      info: DoubleSignerInfo[];
+    };
+
+    export type Infraction = {
+      missingLeader?: MissingLeader;
+      missingProposer?: MissingProposer;
+      missingVoter?: MissingVoter;
+      doubleSigner?: DoubleSigner;
+    };
+
+    export type ValidatorStat = {
+      address: string;
+      name: string;
+      pubKey: string;
+      totalPoints: number;
+      infractions: Infraction[];
+    };
+
+    export type DistMtrg = {
+      addr: string;
+      amount: string;
+    };
+
+    export type RewardInfo = {
+      address: string;
+      amount: string;
+    };
+
+    export type ValidatorReward = {
+      epoch: number;
+      baseReward: string;
+      totalReward: string;
+      rewards: RewardInfo[];
+    };
+
+    export type AuctionSummary = {
       auctionID: string;
       startHeight: number;
+      startEpoch: number;
       endHeight: number;
+      endEpoch: number;
       releasedMTRG: string;
+      reservedMTRG: string;
       reservedPrice: string;
       createTime: number;
       receivedMTR: string;
       actualPrice: string;
-      leftoverMTRG: string;
+      auctionTxs: AuctionTx[];
+      distMTRG: DistMtrg[];
     };
 
-    type AuctionTx = {
-      addr: string;
+    export type AuctionTx = {
+      txid: string;
+      address: string;
       amount: string;
-      count: number;
+      type: string;
+      timestamp: number;
       nonce: number;
-      lastTime: number;
     };
 
-    type Auction = {
+    export type Auction = {
       auctionID: string;
       startHeight: number;
+      startEpoch: number;
       endHeight: number;
+      endEpoch: number;
       releasedMTRG: string;
+      reservedMTRG: string;
       reservedPrice: string;
       createTime: number;
       receivedMTR: string;
       auctionTxs: AuctionTx[];
     };
-
     interface Ticker {
       /**
        * @returns a promise resolves right after head block changed
