@@ -242,6 +242,7 @@ declare namespace Flex {
       startEpoch: number;
       endHeight: number;
       endEpoch: number;
+      sequence: number;
       releasedMTRG: string;
       reservedMTRG: string;
       reservedPrice: string;
@@ -602,6 +603,14 @@ declare namespace Flex {
       voterBitArrayStr: string;
       epochID: number;
     };
+
+    type PowBlock = {
+      hash: string;
+      prevBlock: string;
+      height: number;
+      beneficiary: string;
+    };
+
     type Block = {
       id: string;
       number: number;
@@ -625,6 +634,7 @@ declare namespace Flex {
       nonce: number;
       epoch: number;
       kblockData: string[];
+      powBlocks: PowBlock[];
     };
 
     type Clause = {
