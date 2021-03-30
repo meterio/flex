@@ -33,6 +33,8 @@ declare namespace Flex {
      */
     readonly status: Meter.Status;
 
+    jaileds(): Promise<Meter.Jailed[]>;
+
     /**
      * Return current candidate list
      */
@@ -78,6 +80,20 @@ declare namespace Flex {
      * assumed to current value of status.head.id if omitted
      */
     block(revision?: string | number): Meter.BlockVisitor;
+
+    /**
+     * Create a bucket visitor.
+     *
+     * @param id bucket id,
+     */
+    bucket(id: string): Meter.BucketVisitor;
+
+    /**
+     * Create a candidate visitor.
+     *
+     * @param addr candidate address,
+     */
+    candidate(addr: string): Meter.CandidateVisitor;
 
     /**
      * Create a transaction visitor.
@@ -905,6 +921,9 @@ declare namespace Flex {
     getAccount(addr: string, revision: string): Promise<Meter.Account>;
     getCode(addr: string, revision: string): Promise<Meter.Code>;
     getStorage(addr: string, key: string, revision: string): Promise<Meter.Storage>;
+    getCandidate(addr: string): Promise<Meter.Candidate>;
+    getBucket(id: string): Promise<Meter.Bucket>;
+    getJaileds(): Promise<Meter.Jailed[]>;
     getCandidates(): Promise<Meter.Candidate[]>;
     getBuckets(): Promise<Meter.Bucket[]>;
     getStakeholders(): Promise<Meter.Stakeholder[]>;
