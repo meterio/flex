@@ -561,6 +561,11 @@ declare namespace Flex {
         timestamp: number;
 
         /**
+         * block epoch
+         */
+        epoch: number;
+
+        /**
          * parent block id
          */
         parentID: string;
